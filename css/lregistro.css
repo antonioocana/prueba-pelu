@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: url(../img/cerrar-detalles-peluqueria.jpg) fixed;
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-position: center center;
+    display: flex;
+    min-height: 100vh;
+}
+
+.form{
+    background-color: #434242;
+    margin: auto;
+    width: 90%;
+    max-width: 400px;
+    padding: 4.5em 3em;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px -5px rgb(0 0 0 / 30%);
+    text-align: center;
+}
+
+.form__title{
+    font-size: 3rem;
+    margin-bottom: .5em;
+}
+.form_paragraph{
+    font-weight: 300;
+}
+
+.form_link{
+    font-weight: 400;
+    color: #f3efe0;
+}
+
+.form_container{
+    margin-top: 3em;
+    display: grid;
+    gap: 2.5em;
+}
+.form__group{
+    position: relative;
+    --color: #5757577e;
+}
