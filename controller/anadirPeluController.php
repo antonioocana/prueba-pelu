@@ -27,7 +27,7 @@ if (isset($_POST["nombre"]) && isset($_POST["correo"]) && isset($_POST["password
     $usuario["apellido"] = Utils::limpiar_datos($_POST["apellido"]);
     $usuario["imagen"] = "imagen1.jpeg";
     $usuario["admin"] = 0;
-    $usuario["espelu"] = 0;
+    $usuario["espelu"] = 1;
 
     //Generamos una salt de 16 posiciones
     $salt = Utils::generar_salt(16);
@@ -36,11 +36,12 @@ if (isset($_POST["nombre"]) && isset($_POST["correo"]) && isset($_POST["password
     //utilizando la salt generada y SHA-512
     $usuario["password"] = crypt($_POST["password"], '$6$rounds=5000$' . $salt . '$');
     //Por defecto el usuario esta deshabilitado
-    $usuario["activo"] = 0;
+    $usuario["activo"] = 1;
     //Generamos el codigo de activacion
     $usuario["codActivacion"] = Utils::generar_codigo_activacion();
 
     $gestorUsu = new Usuario();
+
 
 
 
@@ -52,9 +53,11 @@ if (isset($_POST["nombre"]) && isset($_POST["correo"]) && isset($_POST["password
     //Añadimos el registro
     $resultado = $gestorUsu->addUsuario($usuario, $conexPDO);
 
+
     //enviamos el correo de registro
-    Utils::correo_registro($usuario);
-    include("../views/validacion.php");
+    //Utils::correo_registro($usuario);
+    echo '<script>alert("Peluquero creado correctamente");</script>';
+    include("../views/anadirPelu.php");
 } else {
-    include("../views/registro.php");
+    include("../views/anadirPelu.php");
 }

@@ -5,7 +5,6 @@ namespace views;
 session_start();
 error_reporting(0);
 
-//var_dump($datosServicios);
 
 ?>
 
@@ -44,14 +43,14 @@ error_reporting(0);
 					
 				</div>
 				<div>
-					<img src="../img/logo.png" alt="Logo" style="max-height: 100px;">
+					<a href="#"><img src="../img/logo.png" alt="Logo" style="max-height: 100px;"></a>
 				</div>
 				<?php
 				if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
 					print("<button type='button' class='btn btn-info'><a id='globalLink' href='../views/login.php'>Login</a></button>");
 				} else {
 					print('<button class="navbar-toggler" type="button" id="perfil" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">');
-					print('<img src="../img/cerrar-detalles-peluqueria.jpg" alt="Imagen de la persona" style="max-height: 60px; max-width: 60px;">');
+					print('<img src="../img/'.$_SESSION["imagen"].'" alt="Imagen de la persona" style="max-height: 60px; max-width: 60px;">');
 					//<!--<span class="navbar-toggler-icon"></span>-->
 					print('</button>');
 				}
@@ -67,10 +66,28 @@ error_reporting(0);
 				<h5 class="text-white h4" style="color:green;"><?php echo $_SESSION["nombre"] . " " .  $_SESSION["apellido"] ?> </h5>
 				<ul id='globalLink'>
 					<li>
-						<a class="text-white" href="#">Ajustes Perfil</a>
+						<a class="text-white" href="../controller/ajustesPerfilController.php">Ajustes Perfil</a>
 					</li>
+					<?php
+					if ($_SESSION["espelu"] == 1){
+						print('<li>
+								<a class="text-white" href="../controller/citasPeluController.php">Mis citas</a>
+							</li>');
+					}else if($_SESSION["espelu"] == 0 || $_SESSION["espelu"] == null){
+						print('<li>
+								<a class="text-white" href="../controller/citasController.php">Mis citas</a>
+							</li>');
+					}
+					?>
+					<?php
+					if ($_SESSION["admin"] == 1){
+						print('<li>
+								<a class="text-white" href="../controller/anadirPeluController.php">Agregar Peluquero</a>
+							</li>');
+					}
+					?>
 					<li>
-						<a class="text-white" href="#">Mis citas</a>
+						<a class="text-white" href="../controller/modificarPasswordController.php">Modificar contraseña</a>
 					</li>
 					<li>
 						<a class="text-white" href="../controller/cerrarSesion.php">Cerrar Sesion</a>
@@ -79,6 +96,77 @@ error_reporting(0);
 			</div>
 		</div>
 	</nav>
+
+
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="background-color: #222222; color:#f3efe0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Pedir Cita</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#f3efe0">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form method="POST" action="../controller/pedirCitaController.php" enctype ="multipart/form-data">
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">Día</label>
+							<input type="date" class="form-control" id="recipient-name" name="fecha" style="background-color: transparent;" min="">
+						</div>
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">Hora</label>
+							<select class="form-control" name="hora" id="hora" style="background-color: transparent;">
+							<?php
+							for($i=9;$i<=13;$i++){
+								print("<option value='$i.00'>$i :00</option>\n");
+								print("<option value='$i.30'>$i :30</option>\n");
+							}
+							for($i=17;$i<=19;$i++){
+								print("<option value='$i.00'>$i :00</option>\n");
+								print("<option value='$i.30'>$i :30</option>\n");
+							}
+							?>
+							
+							</select>
+						</div>
+						<div>
+
+						</div>
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">Peluquero</label>
+							<select class="form-control" name="peluquero" id="peluquero" style="background-color: transparent;">
+							<?php
+								$peluquerosTotales = count($datosPeluqueros);
+								for($i=0;$i<$peluquerosTotales;$i++){
+									print("<option value='". $datosPeluqueros[$i]["id"]."'>".$datosPeluqueros[$i]["nombre"]."</option>\n");
+								}
+								?>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="recipient-name" class="col-form-label">Servicio</label>
+							<select class="form-control" name="servicio" id="servicio" style="background-color: transparent;">
+							<?php
+								$serviciosTotales = count($datosServicios);
+								for($i=0;$i<$serviciosTotales;$i++){
+									print("<option value='". $datosServicios[$i]["id"]."'>".$datosServicios[$i]["nombre"]."</option>\n");
+								}
+								?>
+							</select>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary">Reservar</button>
+						</div>
+
+					</form>
+
+
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 	<!-- HACER LOS PRINT HASTA AQUI -->
 
@@ -113,45 +201,7 @@ error_reporting(0);
 
 	<!-- Modal pedir cita-->
 
-	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="background-color: #222222; color:#f3efe0">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Pedir Cita</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#f3efe0">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="recipient-name" class="col-form-label">Día</label>
-							<input type="date" class="form-control" id="recipient-name" style="background-color: transparent;">
-						</div>
-						<div class="form-group">
-							<label for="recipient-name" class="col-form-label">Tramo horario</label>
-							<select class="form-control" name="" id="" style="background-color: transparent;">
-								<option value="">HORA 1</option>
-								<option value="">Hora 2</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label for="recipient-name" class="col-form-label">Peluquero</label>
-							<select class="form-control" name="" id="" style="background-color: transparent;">
-								<option value="" style="background-color: transparent;">Peluquero 1</option>
-								<option value="">Peluquero 2</option>
-							</select>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">Reservar</button>
-						</div>
-
-					</form>
-				</div>
-
-			</div>
-		</div>
-	</div>
+	
 
 
 	<!-- Div servicios-->
@@ -161,39 +211,37 @@ error_reporting(0);
 			<section class="">
 				<!--Grid row-->
 
-				<div class="row">
+				<div class="row justify-content-center" style="display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;">
 					<!-- Grid column -->
-					<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-2">
-						<button id="card" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">BARBA</button>
-					</div>
+					<?php
+					for($i = 0;$i < count($datosServicios);$i++){
+						print('<div class="col-md-2 col-lg-2 col-xl-2 d-flex align-items-center justify-content-center mx-auto mt-2">');
+							print('<button style="font-size:20px"id="card" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm'.$i.'">'.$datosServicios[$i]["nombre"].'</button>');
+						print("</div>");
 
-					<!-- Grid column -->
-					<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-2">
-						<button id="card" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">CORTE</button>
 
-					</div>
-					<!-- Grid column -->
-					<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-2">
-						<button id="card" type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">TINTE</button>
-
-					</div>
-
-					
-					<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-						<div class="modal-dialog modal-sm">
-							<div class="modal-content">
-							<div class="card">
-							<img src="../img/hair-salon-g8ce4d22b9_1280.jpg" class="card-img-top" alt="...">
-							<div class="card-body">
-								<h5 class="card-title">BARBA</h5>
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio inventore veniam eligendi architecto ex distinctio?</p>
-								<p class="card-text"><b>PRECIO:</b> 12€</p>
-								<button type="submit" class="btn btn-primary">SERVICIOS</button>
-							</div>
-						</div>
-							</div>
-						</div>
-					</div>
+						print('<div class="modal fade bd-example-modal-sm'.$i.'" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">');
+							print('<div class="modal-dialog modal-sm">');
+								print('<div class="modal-content">');
+									print('<div class="card">');
+										print('<img src="../img/hair-salon-g8ce4d22b9_1280.jpg" class="card-img-top" alt="...">');
+										print('<div class="card-body">');
+										print('<h5 class="card-title">'.$datosServicios[$i]["nombre"].'</h5>');
+										print('<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio inventore veniam eligendi architecto ex distinctio?</p>');
+										print('<p class="card-text"><b>PRECIO:</b>'.$datosServicios[$i]["precio"].'</p>');
+										print('<button type="submit" class="btn btn-primary"><a href="../controller/serviciosController.php">SERVICIOS</a></button>');
+										print('</div>');
+									print('</div>');
+								print('</div>');
+							print('</div>');
+						print('</div>');
+					}
+					?>
 
 				</div>
 				<!--Grid row-->
@@ -202,13 +250,14 @@ error_reporting(0);
 		</div>
 	</div>
 
+	
 	<div style="width:100%; background-color:#f3efe0; padding-top: 3rem; padding-bottom:3rem;">
 		<div class="container marketing">
 			<div class="row featurette">
 				<div class="col-md-7 order-md-2">
 					<h2 class="">SOBRE NOSOTROS</h2>
 					<p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi iusto debitis maxime quos doloribus harum, odio est reprehenderit earum consequuntur pariatur cum voluptatibus alias at facere adipisci maiores nulla voluptates.</p>
-					<button type='button' class='btn btn-info' style="text-align: end;"><a id='globalLink' href='../views/login.php'>CONOCENOS</a></button>
+					<button type='button' class='btn btn-info' style="text-align: end;"><a id='globalLink' href='../controller/sobreNosotrosController.php'>CONOCENOS</a></button>
 				</div>
 				<div class="col-md-5 order-md-1">
 					<img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="800" height="800" src="../img/barber-gbab82b18b_1280.jpg" alt="" style="border-radius: 10px;">
@@ -219,7 +268,7 @@ error_reporting(0);
 	</div>
 
 
-
+	
 	<!--          FOOTER          -->
 
 	<footer class="text-center text-lg-start text-white" style="background-color: #222222">
@@ -307,10 +356,10 @@ error_reporting(0);
 
 		<br>
 	</footer>
-
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="../js/calendario.js"></script>
 </body>
 
 </html>

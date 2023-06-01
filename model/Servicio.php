@@ -28,4 +28,28 @@ class Servicio
         }
     }
 
+    public function getServicioId($id, $conexPDO)
+    {
+        if (isset($id)) {
+
+
+            if ($conexPDO != null) {
+                try {
+                    //Primero introducimos la sentencia a ejecutar con prepare
+                    //Ponemos en lugar de valores directamente, interrogaciones
+                    $sentencia = $conexPDO->prepare("SELECT * FROM peluqueria.servicios where id=?");
+                    //Asociamos a cada interrogacion el valor que queremos en su lugar
+                    $sentencia->bindParam(1, $id);
+                    //Ejecutamos la sentencia
+                    $sentencia->execute();
+
+                    //Devolvemos los datos del Usuario
+                    return $sentencia->fetch();
+                } catch (PDOException $e) {
+                    print("Error al acceder a BD" . $e->getMessage());
+                }
+            }
+        }
+    }
+
 }

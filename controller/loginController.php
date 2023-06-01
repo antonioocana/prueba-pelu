@@ -38,7 +38,10 @@ if (isset($_POST["correo"]) && isset($_POST["password"])) {
             $_SESSION["nombre"] = $resultado["nombre"];
             $_SESSION["apellido"] = $resultado["apellido"];
             $_SESSION["correo"] = $resultado["correo"];
-            $_SESSION["admin"] = $resultado["admin"];
+            $_SESSION["admin"] = $resultado["admin"];   
+            $_SESSION["imagen"] = $resultado["imagen"];   
+            $_SESSION["id"] = $resultado["id"];   
+            $_SESSION["espelu"] = $resultado["espelu"]; 
 
             header("Location: ../controller/homeController.php");
         } else {

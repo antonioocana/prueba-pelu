@@ -21,7 +21,7 @@ $conexPDO = Utils::conectar();
 $datosServicios =$gestorServicio->getServicios($conexPDO);
 $datosPeluqueros = $gestorUsuario->getUsuarioPeluquero($conexPDO);
 
-include("../views/home.php");
+include("../views/sobreNosotros.php");
 
 
 ?>

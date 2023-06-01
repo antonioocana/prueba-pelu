@@ -14,7 +14,7 @@
 ?>
 <div class="background">
 		<div class="login-box" style="max-height: 800px;">
-			<img src="../img/logo.png" class="avatar">
+    <a href="../controller/homeController.php"><img src="../img/logo.png" alt="Logo" style="max-height: 100px;" class="avatar"></a>
             <h1>Login</h1>
 			<form id="formularioRegistro" method="POST" action="<?= $url_destino ?>">
 				<p>Nombre</p>

@@ -12,7 +12,7 @@
 		<div class="login-box">
 
 			<form id="formularioLogin" method="POST" action="../controller/loginController.php">
-				<img src="../img/logo.png" class="avatar">
+      <a href="../controller/homeController.php"><img src="../img/logo.png" alt="Logo" style="max-height: 100px;" class="avatar"></a>
             	<h1>Login</h1>
 				<p>Email</p>
 				<input type="text" name="correo" placeholder="Ingrese su correo electrónico">
@@ -20,7 +20,7 @@
 				<input type="password" name="password" placeholder="Ingrese su contraseña">
 				<input type="submit" name="" value="Entrar">
 				<p>¿Aún no tienes cuenta? <a id="globalLink" href="../controller/registroController.php" style="color:aliceblue; text-decoration:none;">Crear cuenta</a></p>
-                
+        <p><a id="globalLink" href="../controller/recuperaPasswordController.php" style="color:aliceblue; text-decoration:none;"> He olvidado mi contraseña </a></p>        
 			</form>
 		</div>
 	</div>
@@ -68,24 +68,4 @@
 
     });
   </script>
-<!--<body>
-	<form class="form" method="POST" action="../controller/loginController.php">
-		<h2 class="form__title">Iniciar Sesion</h2>
-		<p class="form__paragraph">¿Aún no tienes cuenta? <a href="../controller/registroController.php" class="form__link">Crear cuenta</a></p>
-		<div class="form__container">
-			<div class="form__group">
-				<input type="text" name="correo" id="name" class="form__imput">
-				<label for="name" class="form__lsbel">Correo:</label>
-				<span class="form__line"></span>
-			</div>
-			<div class="form__group">
-				<input type="text" name="password" id="password" class="form__imput">
-				<label for="password" class="form__lsbel">Contraseña:</label>
-				<span class="form__line"></span>
-			</div>
-
-		</div>
-		<input type="submit" value="Entrar" class="form__submit">
-	</form>
-</body>-->
 </html>
